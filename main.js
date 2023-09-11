@@ -4,7 +4,7 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 context.fillStyle = "white";
-context.strokeStyle = "white";
+context.strokeStyle = "#344061";
 context.lineWidth = 5;
 
 class Particle {

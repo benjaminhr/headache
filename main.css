@@ -5,6 +5,7 @@ body {
 }
 canvas {
   position: absolute;
-  background-color: #344061;
+  /* background-color: #344061; */
+  background-color: white;
   transition: background-color 1s ease;
 }
