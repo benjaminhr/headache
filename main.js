@@ -51,8 +51,8 @@ class Effect {
     this.width = width;
     this.height = height;
     this.particles = [];
-    this.numberOfParticles = 10;
-    this.cellSize = 10;
+    this.numberOfParticles = 300;
+    this.cellSize = 20;
     this.rows;
     this.columns;
     this.flowField = [];
