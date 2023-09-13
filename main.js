@@ -162,7 +162,7 @@ class Effect {
       particle.draw(context);
       particle.update();
     });
-    this.addGrain(context);
+    // this.addGrain(context);
   }
 }
 
