@@ -8,8 +8,8 @@ class Particle {
     this.effect = effect;
     this.x = Math.floor(Math.random() * this.effect.width);
     this.y = Math.floor(Math.random() * this.effect.height);
-    this.speedX = Math.random() * 5 - 2.5;
-    this.speedY = Math.random() * 5 - 2.5;
+    this.speedX = 0;
+    this.speedY = 0;
     this.speedModifier = Math.round(Math.random() * 3 + 1);
     this.history = [{ x: this.x, y: this.y }];
     this.maxLength = Math.floor(Math.random() * 200 + 10);
@@ -85,6 +85,7 @@ class Effect {
 
     window.addEventListener("keydown", (e) => {
       if (e.key == "d") this.debug = !this.debug;
+      if (e.key == "m") this.playAudio();
     });
 
     window.addEventListener("resize", (e) => {
@@ -156,6 +157,35 @@ class Effect {
     this.canvas.height = height;
     this.width = this.canvas.width;
     this.height = this.canvas.height;
+  }
+
+  playAudio() {
+    let audio1 = new Audio();
+    audio1.src = "./examples/audio.mp3";
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    let audioSource = null;
+    let analyser = null;
+
+    audio1.play();
+    audioSource = audioCtx.createMediaElementSource(audio1);
+    analyser = audioCtx.createAnalyser();
+    audioSource.connect(analyser);
+    analyser.connect(audioCtx.destination);
+
+    analyser.fftSize = 64;
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+
+    const analyse = () => {
+      analyser.getByteFrequencyData(dataArray);
+      this.particles.forEach((particle) => {
+        particle.x += Math.cos(dataArray[2]);
+        particle.y += Math.sin(dataArray[3]);
+      });
+      requestAnimationFrame(analyse);
+    };
+    analyse();
   }
 
   render(context) {
