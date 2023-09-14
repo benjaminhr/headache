@@ -6,6 +6,6 @@ body {
 canvas {
   position: absolute;
   /* background-color: #344061; */
-  background-color: #8A5031;
+  /* background-color: #8A5031; */
   transition: background-color 1s ease;
 }

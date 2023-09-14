@@ -3,10 +3,6 @@ const context = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-context.fillStyle = "white";
-// context.strokeStyle = "#344061";
-// context.lineWidth = 5;
-
 class Particle {
   constructor(effect) {
     this.effect = effect;
@@ -22,12 +18,14 @@ class Particle {
 
     const colours = ["#84b384", "#E8E7B7", "#9A7D51"];
     this.stroke = colours[Math.round(Math.random() * colours.length)];
-    this.lineWidth = Math.round(Math.random() * 5) + 0.5;
+    this.lineWidth = Math.round(Math.random() * 16) + 0.5;
+    this.lineCap = "round";
   }
 
   draw(context) {
     context.lineWidth = this.lineWidth;
     context.strokeStyle = this.stroke;
+    context.lineCap = this.lineCap;
 
     context.beginPath();
     context.moveTo(this.history[0].x, this.history[0].y);
@@ -74,19 +72,14 @@ class Effect {
     this.width = width;
     this.height = height;
     this.particles = [];
-    this.numberOfParticles = 1000;
-    this.cellSize = 5;
+    this.numberOfParticles = 400;
+    this.cellSize = 10;
     this.rows;
     this.columns;
     this.flowField = [];
     this.curve = 10;
-    this.zoom = 0.2;
-    this.debug = false;
-    this.init();
-
-    window.addEventListener("keydown", (e) => {
-      if (e.key == "d") this.debug = !this.debug;
-    });
+    this.zoom = 0.02;
+    window.addEventListener("keydown", (e) => {});
   }
 
   init() {
@@ -131,26 +124,21 @@ class Effect {
   }
 
   addGrain(context) {
-    //   granulate(amount) {
-    //     loadPixels();
-    //     const d = pixelDensity();
-    //     const pixelsCount = 4 * (width * d) * (height * d);
-    //     for (let i = 0; i < pixelsCount; i += 4) {
-    //         const grainAmount = random(-amount, amount);
-    //         pixels[i] = pixels[i] + grainAmount;
-    //         pixels[i+1] = pixels[i+1] + grainAmount;
-    //         pixels[i+2] = pixels[i+2] + grainAmount;
-    //         // comment in, if you want to granulate the alpha value
-    //         // pixels[i+3] = pixels[i+3] + grainAmount;
-    //     }
-    //     updatePixels();
-    // }
-    // const canvasPixels = canvasImage.data;
-    // console.log(canvasPixels[10000]);
-    // y * this.effect.columns + x;
     const canvasImage = context.getImageData(0, 0, canvas.width, canvas.height);
-    console.log(canvasImage.data[1000]);
-    for (let y = 0; y < this.rows; y++) {}
+    const pixels = canvasImage.data;
+    const pixelCount = 4 * canvas.width * canvas.height;
+    const amount = 15;
+
+    for (let i = 0; i < pixelCount; i += 4) {
+      const grainAmount = Math.round(
+        Math.random() * (amount - -amount) + -amount
+      );
+      pixels[i] = pixels[i] + grainAmount;
+      pixels[i + 1] = pixels[i + 1] + grainAmount;
+      pixels[i + 2] = pixels[i + 2] + grainAmount;
+    }
+    const image = new ImageData(pixels, canvas.width, canvas.height);
+    context.putImageData(image, 0, 0);
   }
 
   render(context) {
@@ -162,7 +150,7 @@ class Effect {
       particle.draw(context);
       particle.update();
     });
-    // this.addGrain(context);
+    this.addGrain(context);
   }
 }
 
@@ -170,6 +158,8 @@ const effect = new Effect(canvas.width, canvas.width);
 
 function animate() {
   context.clearRect(0, 0, canvas.width, canvas.height);
+  context.fillStyle = "#8A5031";
+  context.fillRect(0, 0, canvas.width, canvas.height);
   effect.render(context);
   requestAnimationFrame(animate);
 }
