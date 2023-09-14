@@ -68,9 +68,10 @@ class Particle {
 }
 
 class Effect {
-  constructor(width, height) {
-    this.width = width;
-    this.height = height;
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.width = this.canvas.width;
+    this.height = this.canvas.height;
     this.particles = [];
     this.numberOfParticles = 400;
     this.cellSize = 10;
@@ -84,6 +85,10 @@ class Effect {
 
     window.addEventListener("keydown", (e) => {
       if (e.key == "d") this.debug = !this.debug;
+    });
+
+    window.addEventListener("resize", (e) => {
+      this.resize(e.target.innerWidth, e.target.innerHeight);
     });
   }
 
@@ -146,6 +151,13 @@ class Effect {
     context.putImageData(image, 0, 0);
   }
 
+  resize(width, height) {
+    this.canvas.width = width;
+    this.canvas.height = height;
+    this.width = this.canvas.width;
+    this.height = this.canvas.height;
+  }
+
   render(context) {
     if (this.debug) {
       this.drawGrid(context);
@@ -159,7 +171,7 @@ class Effect {
   }
 }
 
-const effect = new Effect(canvas.width, canvas.width);
+const effect = new Effect(canvas);
 
 function animate() {
   context.clearRect(0, 0, canvas.width, canvas.height);
@@ -168,5 +180,9 @@ function animate() {
   effect.render(context);
   requestAnimationFrame(animate);
 }
+
+/*
+  create json config file with all settings (seed?)
+*/
 
 animate();
