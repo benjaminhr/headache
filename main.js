@@ -79,7 +79,12 @@ class Effect {
     this.flowField = [];
     this.curve = 10;
     this.zoom = 0.02;
-    window.addEventListener("keydown", (e) => {});
+    this.debug = false;
+    this.init();
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key == "d") this.debug = !this.debug;
+    });
   }
 
   init() {
