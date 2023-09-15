@@ -4,10 +4,21 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const randomNumber = (min, max) => {
-  return Math.random() * (max - min) + min;
+  return Math.round(Math.random() * (max - min) + min);
 };
 
-const colours = ["#040D12", "#183D3D", "#5C8374", "#93B1A6"];
+window.addEventListener("keydown", (event) => {
+  if (event.key == "s") {
+    let dataUrl = canvas.toDataURL("image/png");
+    const link = document.createElement("a");
+    link.setAttribute("download", `bauhaus-${randomNumber(1000, 10000)}`);
+    link.setAttribute("href", dataUrl);
+    link.click();
+  }
+});
+
+// const colours = ["#040D12", "#183D3D", "#5C8374", "#93B1A6"];
+const colours = ["#F2EAD3", "#F8F0E5", "#EADBC8", "#DAC0A3"];
 
 const addGrain = () => {
   const canvasImage = context.getImageData(0, 0, canvas.width, canvas.height);
@@ -29,12 +40,20 @@ const addGrain = () => {
 
 const animate = () => {
   context.clearRect(0, 0, canvas.width, canvas.height);
+
+  context.save();
+  context.beginPath();
+  context.fillStyle = "white";
+  context.rect(0, 0, canvas.width, canvas.height);
+  context.fill();
+  context.restore();
+
   context.beginPath();
   let x = 100;
   let y = 100;
   let width = canvas.width - 200;
   let height = canvas.height - 200;
-  context.fillStyle = colours[1];
+  context.fillStyle = "#0F2C59"; // initial rectangle colour
   context.rect(x, y, width, height);
   context.fill();
   context.stroke();
@@ -44,8 +63,8 @@ const animate = () => {
     context.beginPath();
     context.globalAlpha = randomNumber(0.1, 1);
     // context.setLineDash([randomNumber(0, 20), randomNumber(0, 20)]);
-    // context.strokeStyle = "black";
-    context.lineWidth = 5;
+    context.strokeStyle = "black";
+    context.lineWidth = 10;
     context.fillStyle = colours[Math.floor(Math.random() * colours.length)];
 
     const newX = randomNumber(x, x + width);
@@ -60,8 +79,9 @@ const animate = () => {
 
   addGrain();
   context.fillStyle = "black";
-  context.font = "30px Helvetica";
-  context.fillText("benjamin robson", canvas.width - 320, canvas.height - 50);
+  context.font = "bold italic 30px Helvetica";
+  context.fillText("benjamin robson", canvas.width - 345, canvas.height - 50);
 };
 
+animate();
 setInterval(animate, 2000);
