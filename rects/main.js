@@ -29,7 +29,6 @@ const addGrain = () => {
 
 const animate = () => {
   context.clearRect(0, 0, canvas.width, canvas.height);
-
   context.beginPath();
   let x = 100;
   let y = 100;
@@ -41,6 +40,7 @@ const animate = () => {
   context.stroke();
 
   for (let i = 0; i < 30; i++) {
+    context.save();
     context.beginPath();
     context.globalAlpha = randomNumber(0.1, 1);
     // context.setLineDash([randomNumber(0, 20), randomNumber(0, 20)]);
@@ -55,9 +55,13 @@ const animate = () => {
     context.rect(newX, newY, newWidth, newHeight);
     context.fill();
     context.stroke();
+    context.restore();
   }
 
   addGrain();
+  context.fillStyle = "black";
+  context.font = "30px Helvetica";
+  context.fillText("benjamin robson", canvas.width - 320, canvas.height - 50);
 };
 
 setInterval(animate, 2000);
