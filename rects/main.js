@@ -72,7 +72,8 @@ class Effect {
       context.restore();
     }
 
-    this.addGrain();
+    context.filter = "blur(2px) contrast(3) invert(80%) hue-rotate(30deg)";
+    this.addGrain(15);
     // context.fillStyle = "black";
     // context.font = "bold italic 30px Futura";
     // context.filter = "revert";
@@ -83,11 +84,10 @@ class Effect {
     // );
   }
 
-  addGrain = () => {
+  addGrain = (amount) => {
     const canvasImage = context.getImageData(0, 0, canvas.width, canvas.height);
     const pixels = canvasImage.data;
     const pixelCount = 4 * canvas.width * canvas.height;
-    const amount = 80;
 
     for (let i = 0; i < pixelCount; i += 4) {
       const grainAmount = Math.round(

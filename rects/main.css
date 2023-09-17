@@ -7,7 +7,7 @@ body {
 canvas {
   position: absolute;
   transition: background-color 1s ease;
-  filter: blur(8px) contrast(3) invert(80%) hue-rotate(30deg);
+  /* filter: blur(8px) contrast(3) invert(80%) hue-rotate(30deg); */
 }
 
 #download { 
