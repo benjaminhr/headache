@@ -1,0 +1,10 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+canvas {
+  position: absolute;
+  transition: background-color 1s ease;
+}
