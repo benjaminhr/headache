@@ -1,0 +1,15 @@
+html, body { 
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+canvas { 
+  position: absolute; 
+  top: 40%; 
+  left: 50%;
+  transform: translate(-50%, -40%);
+  background-color: black;
+  opacity: 0.85;
+  filter: blur(1px);
+}
