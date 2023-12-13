@@ -1,6 +1,3 @@
-let WIDTH;
-let HEIGHT;
-
 let palette = [
   "#7b4800",
   "#002185",
@@ -10,91 +7,38 @@ let palette = [
   "#6b9404",
 ];
 
-// let palette = spectral.palette("#132043", "#FDF0F0", 9);
-
-const rects = [];
-
 function setup() {
   WIDTH = windowWidth;
   HEIGHT = windowHeight;
   createCanvas(windowWidth, windowHeight, WEBGL);
-  background("#fffceb");
   angleMode(DEGREES);
   brush.scale(1);
 
-  let brushes = ["rotring", "HB", "2B", "2H"];
+  background("#191919");
 
-  // for (let x = 0; x < WIDTH; x += 20) {
-  //   let buildingWidth = random(5, 40);
-  //   let brush = random(brushes);
-  //   let stroke = random(1, 10);
-  //   let colour = random(palette);
-  //   let y = HEIGHT / 3;
-  //   let width = random(50, 80);
-  //   let height = random(200, 450);
-  //   rects.push({
-  //     buildingWidth,
-  //     brush,
-  //     stroke,
-  //     colour,
-  //     x,
-  //     y,
-  //     width,
-  //     height,
-  //   });
-  // }
-}
-
-function draw() {
-  clear();
-  frameRate(10);
-  background("#fffceb");
   translate(-width / 2, -height / 2);
 
-  let availableBrushes = brush.box();
-  console.log(availableBrushes);
+  // We define the brushes for the hatches, and the brushes for the strokes
+  let hatch_brushes = ["marker", "marker2"];
+  let stroke_brushes = ["2H", "HB", "charcoal"];
 
+  // Test Different Flowfields here:
+  // "zigzag", "seabed", "curved", "truncated"
+  // You can also disable field completely with brush.noField()
   brush.field("truncated");
 
-  // for (const rect of rects) {
-  //   console.log(rect);
-  //   brush.pick(rect.brush);
-  //   brush.strokeWeight(rect.stroke);
-  //   brush.stroke(rect.colour);
-  //   brush.rect(rect.x, rect.height, rect.width, rect.height);
-  // }
-
-  for (let x = 0; x < WIDTH; x += 20) {
-    let buildingWidth = random(5, 40);
+  for (let i = 0; i < 10; i++) {
     brush.pick("rotring");
-    brush.strokeWeight(random(3, 8));
-    brush.stroke(random(palette));
+    brush.fill(random(palette), random(80, 140));
+    brush.bleed(0.001);
+    brush.fillTexture(0.55, 0.9);
+
+    // We draw the rectangular grid here
     brush.rect(
-      random(0, WIDTH),
-      random(0, HEIGHT),
-      random(40, 100),
-      random(200, 450)
+      random(0, windowWidth), // x top left corner
+      random(0, windowHeight), // y top left corner
+      random(40, 80), // width
+      windowHeight // height
     );
-  }
-
-  noLoop();
-}
-
-function windowResized() {
-  WIDTH = windowWidth;
-  HEIGHT = windowHeight;
-  resizeCanvas(windowWidth, windowHeight);
-  if (windowHeight > windowWidth) {
-    factor = windowHeight;
-    factdiv = 1080;
-  } else {
-    factor = windowWidth;
-    factdiv = 1920;
-  }
-}
-
-function keyPressed() {
-  if (key === "s") {
-    save("frame.png");
   }
 }

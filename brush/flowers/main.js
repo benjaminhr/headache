@@ -62,9 +62,6 @@ function draw() {
     }
   }
 
-  brush.stroke("white");
-  brush.line(0, 0, 1000, 1000);
-  brush.line(0, 0, -1000, -1000);
   noLoop();
 }
 
